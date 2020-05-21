@@ -1,6 +1,7 @@
 const stylelint = require('stylelint');
 const ignore = require('ignore'); // using same glob matcher as es-lint
 const isString = require('lodash.isstring');
+const valueParser = require('postcss-value-parser');
 
 const ruleName = 'houzz/no-restricted-imports';
 const messages = stylelint.utils.ruleMessages(ruleName, {
@@ -46,10 +47,10 @@ module.exports = stylelint.createPlugin(ruleName, function (blacklist) {
 				|| ignorer.ignores(uri);
 
 			if (isRestricted) {
-				report({
+				stylelint.utils.report({
 					message: messages.rejected(uri),
 					node: atRule,
-					result,
+					result: postcssResult,
 					ruleName,
 				});
 

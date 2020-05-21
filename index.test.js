@@ -1,28 +1,31 @@
 // index.test.js
-const { lint } = require("stylelint");
+const { lint } = require('stylelint');
 
 const config = {
-	plugins: ["./index.js"],
+	plugins: ['./index.js'],
 	rules: {
-		"plugin/at-import-no-unresolveable": [true]
+		'houzz/no-restricted-imports': {
+			paths: 'test/path',
+			patterns: 'test/pattern/**/*.css'
+		}
 	}
 };
 
-it("warns for unresolveable import", async () => {
+it('reports restricted imports', async () => {
 	const {
 		results: [{ warnings, parseErrors }]
 	} = await lint({
-		files: "fixtures/contains-unresolveable-import.css",
+		files: './test/has-restricted-imports.test.css',
 		config
 	});
 
 	expect(parseErrors).toHaveLength(0);
-	expect(warnings).toHaveLength(1);
+	expect(warnings).toHaveLength(3);
 
-	const [{ line, column, text }] = warnings;
+	const { line, column, text } = warnings[0];
 
 	expect(text).toBe(
-		"Unexpected unresolveable import (plugin/at-import-no-unresolveable)"
+		'\'test/path\' import is restricted from being used by a pattern. (houzz/no-restricted-imports)'
 	);
 	expect(line).toBe(1);
 	expect(column).toBe(1);

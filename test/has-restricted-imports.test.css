@@ -1,0 +1,3 @@
+@import 'test/path';
+@import 'test/pattern/a.css';
+@import 'test/pattern/a/b.css';
