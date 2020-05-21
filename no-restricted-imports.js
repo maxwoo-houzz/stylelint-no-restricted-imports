@@ -1,21 +1,25 @@
-// Abbreviated example
-const stylelint = require("stylelint");
+const stylelint = require('stylelint');
+const ignore = require('ignore'); // using same glob matcher as es-lint
+const _ = require('lodash');
 
-const ruleName = "plugin/foo-bar";
+const ruleName = 'houzz/no-restricted-imports';
 const messages = stylelint.utils.ruleMessages(ruleName, {
-	expected: "Expected ..."
+	rejected: (atImport) => `'${atImport}' import is restricted from being used by a pattern.`,
 });
 
-module.exports = stylelint.createPlugin(ruleName, function (
-	primaryOption,
-	secondaryOptionObject
-) {
+module.exports = stylelint.createPlugin(ruleName, function (blacklist) {
 	return function (postcssRoot, postcssResult) {
 		const validOptions = stylelint.utils.validateOptions(
 			postcssResult,
 			ruleName,
 			{
-				/* .. */
+				actual: blacklist,
+				possible: {
+					paths: [_.isString],
+
+					// may not work, see https://github.com/kaelzhang/node-ignore/issues/60
+					patterns: [pattern => ignore.isPathValid(pattern)]
+				}
 			}
 		);
 
@@ -23,9 +27,34 @@ module.exports = stylelint.createPlugin(ruleName, function (
 			return;
 		}
 
-		// ... some logic ...
-		stylelint.utils.report({
-			/* .. */
+		const ignorer = ignore().add(blacklist.patterns);
+
+		postcssRoot.walkAtRules(/^import$/i, (atRule) => {
+			const params = valueParser(atRule.params).nodes;
+
+			if (!params.length) {
+				return;
+			}
+
+			// extract uri from url() if exists
+			const uri =
+				params[0].type === 'function' && params[0].value === 'url'
+					? params[0].nodes[0].value
+					: params[0].value;
+
+			const isRestricted = blacklist.paths.includes(uri)
+				|| ignorer.ignores(uri);
+
+			if (isRestricted) {
+				report({
+					message: messages.rejected(uri),
+					node: atRule,
+					result,
+					ruleName,
+				});
+
+				return;
+			}
 		});
 	};
 });
