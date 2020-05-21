@@ -1,8 +1,8 @@
 {
-  "name": "stylelint-no-restricted-imports",
+  "name": "@maxwoo-houzz/stylelint-no-restricted-imports",
   "version": "0.0.0",
   "description": "stylelint plugin for restricting imports",
-  "main": "app.js",
+  "main": "index.js",
   "scripts": {
     "test": "jest"
   },
@@ -13,9 +13,11 @@
   "license": "ISC",
   "dependencies": {
     "ignore": "^5.1.4",
-    "jest": "^26.0.1",
     "lodash.isstring": "^4.0.1",
     "postcss-value-parser": "^4.1.0",
     "stylelint": "^13.5.0"
+  },
+  "devDependencies": {
+    "jest": "^26.0.1"
   }
 }
