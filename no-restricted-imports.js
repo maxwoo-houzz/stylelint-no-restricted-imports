@@ -1,6 +1,6 @@
 const stylelint = require('stylelint');
 const ignore = require('ignore'); // using same glob matcher as es-lint
-const _ = require('lodash');
+const isString = require('lodash.isstring');
 
 const ruleName = 'houzz/no-restricted-imports';
 const messages = stylelint.utils.ruleMessages(ruleName, {
@@ -15,7 +15,7 @@ module.exports = stylelint.createPlugin(ruleName, function (blacklist) {
 			{
 				actual: blacklist,
 				possible: {
-					paths: [_.isString],
+					paths: [isString],
 
 					// may not work, see https://github.com/kaelzhang/node-ignore/issues/60
 					patterns: [pattern => ignore.isPathValid(pattern)]

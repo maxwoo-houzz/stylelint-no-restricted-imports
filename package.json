@@ -1,0 +1,20 @@
+{
+  "name": "stylelint-no-restricted-imports",
+  "version": "0.0.0",
+  "description": "stylelint plugin for restricting imports",
+  "main": "app.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "keywords": [
+    "stylelint"
+  ],
+  "author": "max.woo@houzz.com",
+  "license": "ISC",
+  "dependencies": {
+    "ignore": "^5.1.4",
+    "jest": "^26.0.1",
+    "lodash.isstring": "^4.0.1",
+    "stylelint": "^13.5.0"
+  }
+}
