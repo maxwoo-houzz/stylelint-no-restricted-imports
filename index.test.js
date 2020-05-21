@@ -4,7 +4,7 @@ const { lint } = require('stylelint');
 const config = {
 	plugins: ['./index.js'],
 	rules: {
-		'houzz/no-restricted-imports': {
+		'plugin/no-restricted-imports': {
 			paths: 'test/path',
 			patterns: 'test/pattern/**/*.css'
 		}
@@ -25,7 +25,7 @@ it('reports restricted imports', async () => {
 	const { line, column, text } = warnings[0];
 
 	expect(text).toBe(
-		'\'test/path\' import is restricted from being used by a pattern. (houzz/no-restricted-imports)'
+		'\'test/path\' import is restricted from being used by a pattern. (plugin/no-restricted-imports)'
 	);
 	expect(line).toBe(1);
 	expect(column).toBe(1);

@@ -3,7 +3,7 @@ const ignore = require('ignore'); // using same glob matcher as es-lint
 const isString = require('lodash.isstring');
 const valueParser = require('postcss-value-parser');
 
-const ruleName = 'houzz/no-restricted-imports';
+const ruleName = 'plugin/no-restricted-imports';
 const messages = stylelint.utils.ruleMessages(ruleName, {
 	rejected: (atImport) => `'${atImport}' import is restricted from being used by a pattern.`,
 });
