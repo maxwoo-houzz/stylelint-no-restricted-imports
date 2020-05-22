@@ -17,9 +17,7 @@ module.exports = stylelint.createPlugin(ruleName, function (blacklist) {
 				actual: blacklist,
 				possible: {
 					paths: [isString],
-
-					// may not work, see https://github.com/kaelzhang/node-ignore/issues/60
-					patterns: [pattern => ignore.isPathValid(pattern)]
+					patterns: [isString]
 				}
 			}
 		);
