@@ -28,6 +28,15 @@ module.exports = stylelint.createPlugin(ruleName, function (blacklist) {
 			return;
 		}
 
+		blacklist.paths = blacklist.paths === undefined
+			? []
+			: isString(blacklist.paths) ? [blacklist.paths] : blacklist.paths;
+
+
+		blacklist.patterns = blacklist.patterns === undefined
+			? []
+			: isString(blacklist.patterns) ? [blacklist.patterns] : blacklist.patterns;
+
 		const ignorer = ignore().add(blacklist.patterns);
 
 		postcssRoot.walkAtRules(/^import$/i, (atRule) => {
