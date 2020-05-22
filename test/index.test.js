@@ -78,3 +78,21 @@ it('supports omitting patterns', async () => {
 
 	expect(warnings).toHaveLength(1);
 });
+
+it('supports re-including patterns', async () => {
+	let config = buildTestConfig(DEFAULT_PATH, [
+		'test/pattern/**/*.css',
+		'!test/pattern/a.css',
+		'!test/pattern/a/b.css',
+	]);
+	delete config.rules['plugin/no-restricted-imports'].patterns;
+
+	const {
+		results: [{ warnings, parseErrors }]
+	} = await lint({
+		files: './test/has-restricted-imports.test.css',
+		config
+	});
+
+	expect(warnings).toHaveLength(1);
+});
